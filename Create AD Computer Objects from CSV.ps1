@@ -22,7 +22,7 @@ param(
     [String[]]$ComputersCSV = $null
 )
 
-$ComputerCount = New-Object System.Collections.ArrayList
+$ComputersCreated = New-Object System.Collections.ArrayList
 
 if ($null -eq $ComputerCSV) {
 
@@ -57,15 +57,16 @@ Write-Output "Creating Computer Objects"
 Write-Host "Creating Computer Objects"
 foreach ($Computer in $Computers) {
     $ComputerData = @{
-        Name                    = $User.Name
-        SamAccountName          = $User.SamAccountName
-        Path                    = $User.Path
+        Name                    = $Computer.Name
+        SamAccountName          = $Computer.SamAccountName
+        Path                    = $Computer.Path
         Enabled                 = $True
         PasswordNeverExpires    = $False
         }
 New-ADComputer @ComputerData -PassThru
-$ComputerCount.Add($computer.SamAccountName) | Out-Null
+$ComputersCreated.Add($computer.SamAccountName) | Out-Null
 }
-Write-Output Created $ComputerCount.count Computer Objects
-Write-Host Created $ComputerCount.count Computer Objects
 
+$computercount = $ComputersCreated.Count
+Write-Output "Created $ComputerCount Computer Objects"
+Write-Host "Created $ComputerCount Computer Objects"
